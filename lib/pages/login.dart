@@ -21,25 +21,27 @@ class _LoginState extends State<Login> {
         title: const Text("Sistema de Venda"),
         backgroundColor: Colors.greenAccent,
       ),
-      body: _body(),
+      body: _buildBody(context),
     );
   }
 
-  _body() {
+  Widget _buildBody(BuildContext context) {
     return ListView(
       // ignore: prefer_const_literals_to_create_immutables
       children: [
-        Padding (
+        Padding(
           padding: const EdgeInsets.all(20),
           child: Texts("Entre no sistema:"),
         ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Input("Email:", "Insira seu email...", controller: _email, false),
+          child:
+              Input("Email:", "Insira seu email...", controller: _email, false),
         ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Input("Senha:", "Insira sua senha...", controller: _password, true),
+          child: Input(
+              "Senha:", "Insira sua senha...", controller: _password, true),
         ),
         Center(
           child: Buttons("Entrar", onPressed: _entrar),

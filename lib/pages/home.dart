@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sistema_de_venda/widgets/texts.dart';
+import 'package:sistema_de_venda/pages/users.dart';
+import 'package:sistema_de_venda/pages/clients.dart';
+import 'package:sistema_de_venda/pages/products.dart';
+import 'package:sistema_de_venda/pages/sales.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,44 +13,102 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sistema de Venda"),
         backgroundColor: Colors.greenAccent,
-        actions: [
-          IconButton(
-              onPressed: () {
-                _click(context, const Home());
-              },
-              icon: const Icon(Icons.home)
-          )
-        ],
       ),
-      body: _body(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+              ),
+              child: Text('Sistema de Vendas'),
+            ),
+            _buildDrawerItem('Página Inicial', const Home(), context),
+            _buildDrawerItem('Usuários', const User(), context),
+            _buildDrawerItem('Clientes', const Client(), context),
+            _buildDrawerItem('Produtos', const Product(), context),
+            _buildDrawerItem('Vendas', const Sale(), context),
+          ],
+        ),
+      ),
+      body: _buildBody(context),
     );
   }
 
-  _body() {
+  Widget _buildDrawerItem(String title, Widget page, BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      onTap: () {
+        _click(context, page);
+      },
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     return ListView(
       // ignore: prefer_const_literals_to_create_immutables
       children: [
-        Padding (
+        Padding(
           padding: const EdgeInsets.all(20),
-          child: Texts("Seja Bem-Vindo"),
+          child: Texts("Dashboard"),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(20),
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.shopping_basket),
+                  title: Text("Quantidade de Vendas: 24"),
+                )
+              ],
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(20),
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.monetization_on_rounded),
+                  title: Text("Valor Total das Vendas: 156.085.00"),
+                )
+              ],
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(20),
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.money),
+                  title: Text("Valor das Comissões: 28.760.00"),
+                )
+              ],
+            ),
+          ),
         )
       ],
     );
-    }
-
-  _click(BuildContext context, page) {
-    Navigator.push(context, MaterialPageRoute(builder:
-        (BuildContext context) {
-      return page;
-    }
-    ));
-    }
   }
+
+  void _click(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return page;
+    }));
+  }
+}

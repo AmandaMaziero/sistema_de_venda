@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_de_venda/pages/forms/users.form.dart';
 import 'package:sistema_de_venda/widgets/buttons.dart';
 import 'package:sistema_de_venda/widgets/texts.dart';
 import 'package:sistema_de_venda/pages/home.dart';
@@ -69,7 +70,7 @@ class User extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Buttons("Cadastrar", onPressed: () {
-                      _click(context, const User());
+                      _click(context, const FormUser());
                     }),
                   ],
                 ),

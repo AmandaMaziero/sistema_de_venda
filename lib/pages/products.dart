@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_de_venda/pages/forms/products.form.dart';
 import 'package:sistema_de_venda/widgets/buttons.dart';
 import 'package:sistema_de_venda/widgets/texts.dart';
 import 'package:sistema_de_venda/pages/home.dart';
@@ -69,7 +70,7 @@ class Product extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Buttons("Cadastrar", onPressed: () {
-                      _click(context, const Product());
+                      _click(context, const FormProduct());
                     }),
                   ],
                 ),
@@ -102,7 +103,7 @@ class Product extends StatelessWidget {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("preço: 25.90", textAlign: TextAlign.center)
+                          Text("Preço: 25.90", textAlign: TextAlign.center)
                         ])),
                 const Padding(
                     padding: EdgeInsets.all(5),
@@ -171,7 +172,7 @@ class Product extends StatelessWidget {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("preço: 100.00", textAlign: TextAlign.center)
+                          Text("Preço: 100.00", textAlign: TextAlign.center)
                         ])),
                 const Padding(
                     padding: EdgeInsets.all(5),

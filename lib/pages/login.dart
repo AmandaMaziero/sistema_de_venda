@@ -36,12 +36,12 @@ class _LoginState extends State<Login> {
         Padding(
           padding: const EdgeInsets.all(20),
           child:
-              Input("Email:", "Insira seu email...", controller: _email, false),
+              Input("Insira seu email...", "Email:", controller: _email, false),
         ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Input(
-              "Senha:", "Insira sua senha...", controller: _password, true),
+              "Insira seu email...", "Senha:", controller: _password, true),
         ),
         Center(
           child: Buttons("Entrar", onPressed: _entrar),

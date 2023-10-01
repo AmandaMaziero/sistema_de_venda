@@ -5,6 +5,7 @@ import 'package:sistema_de_venda/pages/home.dart';
 import 'package:sistema_de_venda/pages/users.dart';
 import 'package:sistema_de_venda/pages/products.dart';
 import 'package:sistema_de_venda/pages/sales.dart';
+import 'package:sistema_de_venda/pages/forms/clients.form.dart';
 
 class Client extends StatelessWidget {
   const Client({Key? key}) : super(key: key);
@@ -69,7 +70,7 @@ class Client extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Buttons("Cadastrar", onPressed: () {
-                      _click(context, const Client());
+                      _click(context, const FormClient());
                     }),
                   ],
                 ),

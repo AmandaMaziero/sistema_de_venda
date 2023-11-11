@@ -1,4 +1,5 @@
 import 'package:sistema_de_venda/pages/home.dart';
+import 'package:sistema_de_venda/services/authService.dart';
 import 'package:sistema_de_venda/widgets/buttons.dart';
 import 'package:sistema_de_venda/widgets/input.dart';
 import 'package:sistema_de_venda/widgets/texts.dart';
@@ -14,6 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _email = TextEditingController();
   final _password = TextEditingController();
+  AuthService _authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +43,7 @@ class _LoginState extends State<Login> {
         Padding(
           padding: const EdgeInsets.all(20),
           child: Input(
-              "Insira seu email...", "Senha:", controller: _password, true),
+              "Insira sua senha...", "Senha:", controller: _password, true),
         ),
         Center(
           child: Buttons("Entrar", onPressed: _entrar),
@@ -55,29 +57,30 @@ class _LoginState extends State<Login> {
     setState(() {
       email = _email.text.toString();
       password = _password.text.toString();
-
-      if (email == "admin@admin.com" && password == "123456") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Erro ao entrar!'),
-              content: const Text('Email ou Senha inválidos!'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
+      _authService.login(email: email, password: password).then((error) {
+        if (error == null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Erro ao entrar!'),
+                content: Text(error),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
     });
   }
 }

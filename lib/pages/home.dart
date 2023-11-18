@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
               child: Text('Sistema de Vendas'),
             ),
             _buildDrawerItem('Página Inicial', const Home(), context),
-            _buildDrawerItem('Usuários', const User(), context),
+            _buildDrawerItem('Usuários', User(), context),
             _buildDrawerItem('Clientes', const Client(), context),
             _buildDrawerItem('Produtos', const Product(), context),
             _buildDrawerItem('Vendas', const Sale(), context),

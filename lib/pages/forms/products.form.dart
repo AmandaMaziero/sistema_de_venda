@@ -67,7 +67,8 @@ class _FormProductState extends State<FormProduct> {
       ),
       Padding(
         padding: const EdgeInsets.all(20),
-        child: Input("Insira o nome...", "Nome:", controller: _name, false),
+        child:
+            Input("Insira o nome...", "Nome:", controller: _name, false, true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
@@ -75,11 +76,13 @@ class _FormProductState extends State<FormProduct> {
             "Insira a descrição...",
             "Descrição:",
             controller: _description,
-            false),
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
-        child: Input("Insira o preço...", "Preço:", controller: _price, false),
+        child: Input(
+            "Insira o preço...", "Preço:", controller: _price, false, true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
@@ -87,12 +90,17 @@ class _FormProductState extends State<FormProduct> {
             "Insira o código de barras...",
             "Código de Barras:",
             controller: _code,
-            false),
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
         child: Input(
-            "Insira a quantidade...", "Quantidade:", controller: _count, true),
+            "Insira a quantidade...",
+            "Quantidade:",
+            controller: _count,
+            true,
+            true),
       ),
     ]);
   }

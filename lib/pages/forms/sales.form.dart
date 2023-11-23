@@ -70,12 +70,20 @@ class _FormSaleState extends State<FormSale> {
       Padding(
         padding: const EdgeInsets.all(20),
         child: Input(
-            "Insira o Vendedor...", "Vendedor:", controller: _seller, false),
+            "Insira o Vendedor...",
+            "Vendedor:",
+            controller: _seller,
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
         child: Input(
-            "Insira o Cliente...", "Cliente:", controller: _client, false),
+            "Insira o Cliente...",
+            "Cliente:",
+            controller: _client,
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
@@ -83,17 +91,26 @@ class _FormSaleState extends State<FormSale> {
             "Insira o Valor Total...",
             "Valor Total:",
             controller: _amount,
-            false),
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
         child: Input(
-            "Insira os Produtos...", "Produtos:", controller: _products, false),
+            "Insira os Produtos...",
+            "Produtos:",
+            controller: _products,
+            false,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
         child: Input(
-            "Insira a comissão...", "Comissão:", controller: _commission, true),
+            "Insira a comissão...",
+            "Comissão:",
+            controller: _commission,
+            true,
+            true),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
@@ -101,6 +118,7 @@ class _FormSaleState extends State<FormSale> {
             "Insira o percentual...",
             "Percentual:",
             controller: _percentage,
+            true,
             true),
       ),
       Padding(
@@ -109,6 +127,7 @@ class _FormSaleState extends State<FormSale> {
             "Insira a forma de pagamento...",
             "Forma de Pagamento:",
             controller: _paymentMethod,
+            true,
             true),
       ),
     ]);

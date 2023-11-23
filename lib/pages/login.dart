@@ -61,22 +61,26 @@ class _LoginState extends State<Login> {
         ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child:
-              Input("Insira seu email...", "Email:", controller: _email, false),
+          child: Input(
+              "Insira seu email...", "Email:", controller: _email, false, true),
         ),
         Visibility(
             visible: naoPossuiCadastro,
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Input(
-                  "Insira seu nome...", "Nome:", controller: _name, false),
+                  "Insira seu nome...",
+                  "Nome:",
+                  controller: _name,
+                  false,
+                  true),
             )),
         Visibility(
             visible: naoPossuiCadastro,
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child:
-                  Input("Insira seu CPF...", "CPF:", controller: _cpf, false),
+              child: Input(
+                  "Insira seu CPF...", "CPF:", controller: _cpf, false, true),
             )),
         Visibility(
             visible: naoPossuiCadastro,
@@ -113,12 +117,20 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Input(
-                  "Insira seu tipo...", "Tipo:", controller: _type, false),
+                  "Insira seu tipo...",
+                  "Tipo:",
+                  controller: _type,
+                  false,
+                  true),
             )),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Input(
-              "Insira sua senha...", "Senha:", controller: _password, true),
+              "Insira sua senha...",
+              "Senha:",
+              controller: _password,
+              true,
+              true),
         ),
         Center(
           child: Column(

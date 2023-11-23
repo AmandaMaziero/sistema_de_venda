@@ -115,7 +115,7 @@ class User extends StatelessWidget {
                       _buildTextRow("Data de Nascimento: $formattedBirthDate"),
                       _buildTextRow("Tipo: ${userData['type']}"),
                       _buildIconButtons(
-                          userData['id'], userData['status'], context),
+                          userData['uid'], userData['status'], context),
                     ],
                   ),
                 ),
@@ -147,12 +147,14 @@ class User extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              _click(context, const FormUser());
+              _click(context, FormUser(userId: id));
             },
             icon: const Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await _userService.changeStatus(userId: id, status: status);
+            },
             icon: const Icon(Icons.check),
           ),
           IconButton(
@@ -179,15 +181,14 @@ class User extends StatelessWidget {
     return formatter.format(dateTime);
   }
 
-  _delete(id, BuildContext context) async {
-    print(id);
+  _delete(String id, BuildContext context) async {
     await _userService.delete(id).then((error) {
       if (error == null) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Erro ao deletar!'),
+              title: const Text('Deletado usuário!'),
               content: const Text("Usuário deletado com sucesso!"),
               actions: <Widget>[
                 TextButton(

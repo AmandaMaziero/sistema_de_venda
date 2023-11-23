@@ -70,7 +70,7 @@ class Client extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Buttons("Cadastrar", onPressed: () {
-                      _click(context, const FormClient());
+                      _click(context, FormClient());
                     }),
                   ],
                 ),

@@ -14,7 +14,8 @@ class ClientService {
     required String phone,
   }) async {
     try {
-      await _firebaseFirestore.collection('clients').add({
+      DocumentReference documentReference =
+          await _firebaseFirestore.collection('clients').add({
         'name': name,
         'email': email,
         'document': document,
@@ -22,6 +23,10 @@ class ClientService {
         'address': address,
         'phone': phone,
       });
+
+      String documentId = documentReference.id;
+
+      await documentReference.update({'uid': documentId});
 
       return null;
     } catch (e) {
@@ -51,19 +56,6 @@ class ClientService {
       return null;
     } catch (e) {
       return "Erro ao editar: $e";
-    }
-  }
-
-  Future<String?> changeStatus(
-      {required String cliId, required bool status}) async {
-    try {
-      await _firebaseFirestore
-          .collection('clients')
-          .doc(cliId)
-          .update({'status': !status});
-      return null;
-    } catch (e) {
-      return "Erro ao alterar status: $e";
     }
   }
 }

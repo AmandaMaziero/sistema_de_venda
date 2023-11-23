@@ -1,4 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sistema_de_venda/services/client_service.dart';
@@ -12,10 +12,8 @@ import 'package:sistema_de_venda/pages/products.dart';
 import 'package:sistema_de_venda/pages/sales.dart';
 
 class FormClient extends StatefulWidget {
-  // final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final ClientService _clientService = ClientService();
-
-  FormClient({super.key});
+  final String? cliId;
+  const FormClient({Key? key, this.cliId}) : super(key: key);
 
   @override
   State<FormClient> createState() => _FormClientState();
@@ -28,6 +26,8 @@ class _FormClientState extends State<FormClient> {
   final _dateBirth = TextEditingController();
   final _address = TextEditingController();
   final _phone = TextEditingController();
+  final ClientService _clientService = ClientService();
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +48,13 @@ class _FormClientState extends State<FormClient> {
             ),
             _buildDrawerItem('Página Inicial', const Home(), context),
             _buildDrawerItem('Usuários', User(), context),
-            _buildDrawerItem('Clientes', const Client(), context),
-            _buildDrawerItem('Produtos', const Product(), context),
+            _buildDrawerItem('Clientes', Client(), context),
+            _buildDrawerItem('Produtos', Product(), context),
             _buildDrawerItem('Vendas', const Sale(), context),
           ],
         ),
       ),
-      body: _buildBody(context),
+      body: _buildBody(context, cliId: widget.cliId),
     );
   }
 
@@ -73,11 +73,16 @@ class _FormClientState extends State<FormClient> {
     super.initState();
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context, {String? cliId}) {
+    if (cliId != null) {
+      loadClientData(cliId);
+    }
     return ListView(children: [
       Padding(
         padding: const EdgeInsets.all(20),
-        child: Texts("Cadastro de Clientes"),
+        child: cliId != null
+            ? Texts("Edição de Clientes")
+            : Texts("Cadastro de Clientes"),
       ),
       Padding(
         padding: const EdgeInsets.all(20),
@@ -145,16 +150,25 @@ class _FormClientState extends State<FormClient> {
             "Insira seu telefone...",
             "Telefone:",
             controller: _phone,
-            true,
+            false,
             true),
       ),
-      Center(
-        child: Column(
-          children: [
-            Buttons("Cadastrar", onPressed: _cadastrar),
-          ],
+      if (cliId != null)
+        Center(
+          child: Column(
+            children: [
+              Buttons("Editar", onPressed: _editar),
+            ],
+          ),
+        )
+      else
+        Center(
+          child: Column(
+            children: [
+              Buttons("Cadastrar", onPressed: _cadastrar),
+            ],
+          ),
         ),
-      ),
     ]);
   }
 
@@ -162,6 +176,34 @@ class _FormClientState extends State<FormClient> {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
       return page;
     }));
+  }
+
+  void loadClientData(String cliId) async {
+    try {
+      var clientSnapshot =
+          await _firebaseFirestore.collection('clients').doc(cliId).get();
+
+      if (clientSnapshot.exists) {
+        var clientData = clientSnapshot.data() as Map<String, dynamic>;
+        _name.text = clientData['name'] ?? '';
+        _email.text = clientData['email'] ?? '';
+        _document.text = clientData['document'] ?? '';
+        _dateBirth.text = clientData['birthDate'] != null
+            ? _formatBirthDate(clientData['birthDate'])
+            : '';
+        _address.text = clientData['address'] ?? '';
+        _phone.text = clientData['phone'] ?? '';
+      }
+    } catch (e) {
+      print('Erro ao carregar dados do usuário: $e');
+    }
+  }
+
+  String _formatBirthDate(dynamic birthDate) {
+    final timestamp = birthDate as Timestamp;
+    final dateTime = timestamp.toDate();
+    final formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(dateTime);
   }
 
   void _cadastrar() {
@@ -187,7 +229,7 @@ class _FormClientState extends State<FormClient> {
         if (error == null) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Client()),
+            MaterialPageRoute(builder: (context) => Client()),
           );
         } else {
           showDialog(
@@ -195,6 +237,48 @@ class _FormClientState extends State<FormClient> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Erro ao cadastrar cliente!'),
+                content: Text(error),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
+    });
+  }
+
+  void _editar() {
+    String email, address, name, phone;
+    setState(() {
+      email = _email.text.toString();
+      name = _name.text.toString();
+      address = _address.text.toString();
+      phone = _phone.text.toString();
+
+      _clientService
+          .update(
+              cliId: widget.cliId!,
+              email: email,
+              name: name,
+              address: address,
+              phone: phone)
+          .then((error) {
+        if (error == null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Client()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Erro ao editar cliente!'),
                 content: Text(error),
                 actions: <Widget>[
                   TextButton(

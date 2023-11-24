@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_de_venda/services/sale_service.dart';
+import 'package:sistema_de_venda/widgets/buttons.dart';
 import 'package:sistema_de_venda/widgets/input.dart';
 import 'package:sistema_de_venda/widgets/texts.dart';
 import 'package:sistema_de_venda/pages/home.dart';
@@ -17,11 +19,12 @@ class FormSale extends StatefulWidget {
 class _FormSaleState extends State<FormSale> {
   final _seller = TextEditingController();
   final _client = TextEditingController();
-  final _amount = TextEditingController();
+  final _totalValue = TextEditingController();
   final _products = TextEditingController();
   final _commission = TextEditingController();
   final _percentage = TextEditingController();
   final _paymentMethod = TextEditingController();
+  final SaleService _saleService = SaleService();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class _FormSaleState extends State<FormSale> {
             _buildDrawerItem('Usuários', User(), context),
             _buildDrawerItem('Clientes', Client(), context),
             _buildDrawerItem('Produtos', Product(), context),
-            _buildDrawerItem('Vendas', const Sale(), context),
+            _buildDrawerItem('Vendas', Sale(), context),
           ],
         ),
       ),
@@ -90,7 +93,7 @@ class _FormSaleState extends State<FormSale> {
         child: Input(
             "Insira o Valor Total...",
             "Valor Total:",
-            controller: _amount,
+            controller: _totalValue,
             false,
             true),
       ),
@@ -109,7 +112,7 @@ class _FormSaleState extends State<FormSale> {
             "Insira a comissão...",
             "Comissão:",
             controller: _commission,
-            true,
+            false,
             true),
       ),
       Padding(
@@ -118,7 +121,7 @@ class _FormSaleState extends State<FormSale> {
             "Insira o percentual...",
             "Percentual:",
             controller: _percentage,
-            true,
+            false,
             true),
       ),
       Padding(
@@ -127,8 +130,15 @@ class _FormSaleState extends State<FormSale> {
             "Insira a forma de pagamento...",
             "Forma de Pagamento:",
             controller: _paymentMethod,
-            true,
+            false,
             true),
+      ),
+      Center(
+        child: Column(
+          children: [
+            Buttons("Cadastrar", onPressed: _cadastrar),
+          ],
+        ),
       ),
     ]);
   }
@@ -137,5 +147,59 @@ class _FormSaleState extends State<FormSale> {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
       return page;
     }));
+  }
+
+  void _cadastrar() {
+    String seller,
+        client,
+        totalValue,
+        products,
+        commission,
+        percentage,
+        paymentMethod;
+    setState(() {
+      seller = _seller.text.toString();
+      totalValue = _totalValue.text.toString();
+      client = _client.text.toString();
+      products = _products.text.toString();
+      commission = _commission.text.toString();
+      percentage = _percentage.text.toString();
+      paymentMethod = _paymentMethod.text.toString();
+
+      _saleService
+          .register(
+        totalValue: double.parse(totalValue),
+        seller: seller,
+        products: products,
+        client: client,
+        commission: double.parse(commission),
+        percentage: double.parse(percentage),
+        paymentMethod: paymentMethod,
+      )
+          .then((error) {
+        if (error == null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Sale()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Erro ao cadastrar venda!'),
+                content: Text(error),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
+    });
   }
 }

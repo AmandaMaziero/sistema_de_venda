@@ -48,7 +48,7 @@ class _FormProductState extends State<FormProduct> {
             _buildDrawerItem('Usuários', User(), context),
             _buildDrawerItem('Clientes', Client(), context),
             _buildDrawerItem('Produtos', Product(), context),
-            _buildDrawerItem('Vendas', const Sale(), context),
+            _buildDrawerItem('Vendas', Sale(), context),
           ],
         ),
       ),

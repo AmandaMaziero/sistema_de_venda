@@ -114,6 +114,7 @@ class User extends StatelessWidget {
                       _buildTextRow("CPF: ${userData['cpf']}"),
                       _buildTextRow("Data de Nascimento: $formattedBirthDate"),
                       _buildTextRow("Tipo: ${userData['type']}"),
+                      _buildTextRow("Status: ${userData['status']}"),
                       _buildIconButtons(
                           userData['uid'], userData['status'], context),
                     ],

@@ -122,7 +122,7 @@ class _FormClientState extends State<FormClient> {
               DateTime? pickedDate = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
+                  firstDate: DateTime(1920),
                   lastDate: DateTime(2101));
 
               if (pickedDate != null) {
